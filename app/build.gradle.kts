@@ -70,31 +70,63 @@ base {
 android {
 
     signingConfigs {
-        create("release") {
-            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
-            System.getenv("SIGNING_KEYSTORE_PATH")?.let { path ->
-                storeFile = file(path)
-            }
-            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-        }
-        create("training") {
-            keyAlias = System.getenv("TRAINING_KEY_ALIAS")
-            keyPassword = System.getenv("TRAINING_KEY_PASSWORD")
-            System.getenv("TRAINING_STORE_FILE")?.let { path ->
-                storeFile = file(path)
-            }
-            storePassword = System.getenv("TRAINING_STORE_PASSWORD")
-        }
-        val customKeystorePath = System.getenv("DEBUG_KEYSTORE_PATH")
-        if (customKeystorePath != null ) {
-            getByName("debug") {
-                keyAlias = System.getenv("DEBUG_KEYSTORE_ALIAS")
-                keyPassword = System.getenv("DEBUG_KEY_PASS")
-                storeFile = file(customKeystorePath)
-                storePassword = System.getenv("DEBUG_KEYSTORE_PASSWORD")
-            }
-        }
+		create("release") {
+			val keystoreFile = rootProject.file("release.keystore")
+			val alias = System.getenv("KEYSTORE_ALIAS_NAME")
+			val aliasPassword = System.getenv("KEYSTORE_ALIAS_PASS")
+			val keystorePassword = System.getenv("KEYSTORE_PASSWORD")
+
+			if (!keystoreFile.isFile) {
+				throw GradleException(
+					"Keystore no encontrado: ${keystoreFile.absolutePath}"
+				)
+			}
+
+			if (alias.isNullOrBlank()) {
+				throw GradleException(
+					"La variable KEYSTORE_ALIAS_NAME no está configurada"
+				)
+			}
+
+			if (aliasPassword.isNullOrBlank()) {
+				throw GradleException(
+					"La variable KEYSTORE_ALIAS_PASS no está configurada"
+				)
+			}
+
+			if (keystorePassword.isNullOrBlank()) {
+				throw GradleException(
+					"La variable KEYSTORE_PASSWORD no está configurada"
+				)
+			}
+
+			storeFile = keystoreFile
+			keyAlias = alias
+			keyPassword = aliasPassword
+			storePassword = keystorePassword
+		}
+
+		create("training") {
+			keyAlias = System.getenv("TRAINING_KEY_ALIAS")
+			keyPassword = System.getenv("TRAINING_KEY_PASSWORD")
+
+			System.getenv("TRAINING_STORE_FILE")?.let { path ->
+				storeFile = file(path)
+			}
+
+			storePassword = System.getenv("TRAINING_STORE_PASSWORD")
+		}
+
+		val customKeystorePath = System.getenv("DEBUG_KEYSTORE_PATH")
+
+		if (!customKeystorePath.isNullOrBlank()) {
+			getByName("debug") {
+				keyAlias = System.getenv("DEBUG_KEYSTORE_ALIAS")
+				keyPassword = System.getenv("DEBUG_KEY_PASS")
+				storeFile = file(customKeystorePath)
+				storePassword = System.getenv("DEBUG_KEYSTORE_PASSWORD")
+			}
+		}
     }
 
     testOptions {
