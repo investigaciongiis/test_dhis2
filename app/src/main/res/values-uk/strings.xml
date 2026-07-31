@@ -1,0 +1,572 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!--GENERAL-->
+    <string name="app_name">Dhis2</string>
+    <!-- Warnings and error messages -->
+    <string name="error">Помилка</string>
+    <string name="no_reserved_values">Більше немає зарезервованих значень. Зверніться до свого системного адміністратора</string>
+    <string name="something_wrong">Сталася помилка</string>
+    <!-- SyncService strings: -->
+
+    <string name="sync_events">Події</string>
+
+    <string name="sync_error_title">Помилка синхронізації</string>
+    <string name="sync_error_text">Під час синхронізації сталася помилка. Будь ласка, повторіть спробу.</string>
+    <string name="sync_incomplete_error_text">Синхронізацію завершено, але ми не отримали підтвердження від серверу для усіх записів. Ці записи все ще позначено як \"офлайн\" у програмі. Рекомендуємо повторити спробу синхронізації.</string>
+    <string name="enter_event_data">Введіть %s</string>
+    <string name="enter_cancel_event_data">Ввести / Пропустити %s</string>
+    <string name="referral">Направлення</string>
+
+    <!-- Login -->
+    <string name="syncing_configuration">Синхронізація Вашої конфігурації</string>
+    <string name="syncing_data_shortly">Ваші дані незабаром буде синхронізовано</string>
+    <string name="syncing_data">Синхронізація Ваших даних</string>
+    <string name="configuration_ready">Ваша конфігурація готова</string>
+    <string name="data_ready">Ваші дані готові</string>
+    <string name="account_recovery">Відновлення облікового запису</string>
+
+    <!--PERIOD-->
+    <string name="DAILY">Щодня</string>
+    <string name="WEEKLY">Щотижня</string>
+    <string name="MONTHLY">Щомісячно</string>
+    <string name="YEARLY">Щорічно</string>
+    <string name="clear_filters">Очистити фільтри</string>
+    <string name="action_accept">Прийняти</string>
+    <string name="action_share_zero_items">Поділитися</string>
+    <string name="action_share_single_item">Поділитися елементом %d</string>
+    <string name="action_share_multiple_item">Поділитися елементами %d</string>
+
+    <!-- Input hints -->
+    <string name="search">Пошук</string>
+    <string name="search_add_new_te_type">Пошук / Додати нового \'%s\'</string>
+    <string name="search_te_type">Пошук \'%s\'</string>
+    <string name="enter_text">Введіть текст</string>
+    <string name="enter_long_text">Введіть довгий текст</string>
+    <string name="enter_number">Введіть номер</string>
+    <string name="enter_negative_integer">Введіть ціле від’ємне число</string>
+    <string name="enter_positive_integer_or_zero">Введіть додатне число або нуль</string>
+    <string name="enter_positive_integer">Введіть додатне число</string>
+    <string name="choose_date">Оберіть дату</string>
+
+    <!-- Status -->
+
+    <string name="event_open">Відкрити</string>
+    <string name="event_not_completed">Не завершено</string>
+    <string name="event_completed">Подія завершена</string>
+    <string name="read_only">Тільки читати</string>
+    <string name="completed">Завершено</string>
+    <string name="cancelled">Скасовано</string>
+    <string name="active">Активно</string>
+
+    <!-- State -->
+    <string name="state_synced">Синхронізація</string>
+    <string name="state_to_post">Надіслати</string>
+    <string name="state_to_update">Оновити</string>
+    <string name="state_error">Помилка</string>
+
+    <!--Completion-->
+
+    <!--Event initial-->
+    <string name="update">Оновити</string>
+    <string name="org_unit">Організаційний підрозділ</string>
+    <string name="no_org_units">На вибрану дату немає відкритих організаційних підрозділів. Виберіть іншу дату або інший організаційний підрозділ.</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Довгота</string>
+
+    <!--DataSet initial-->
+    <string name="report_period">Звітний період</string>
+    <!--Event Detail-->
+    <string name="due_date">Дата виконання</string>
+    <string name="cat_combo">Комбінація категорій</string>
+    <string name="cancel">Скасувати</string>
+    <string name="delete">Видалити</string>
+    <string name="most_recent_event_date">Дата останнього випадку</string>
+    <string name="no_options">Немає доступних опцій</string>
+
+    <string name="active_programs">Активні програми</string>
+    <string name="enroll">Зареєструвати</string>
+
+    <!--TEI DASHBOARD-->
+    <string name="edit">Редагувати</string>
+    <string name="deactivate">Деактивувати</string>
+    <string name="program_not_allow_events">Ця програма не дозволяє мати більше випадків</string>
+
+    <!--DONE TASKS-->
+    <string name="events">випадки</string>
+    <string name="done_task">Головна</string>
+    <string name="log_out">Вийти з системи</string>
+    <string name="show_more_events">Показати %s більше...</string>
+    <string name="show_less_events">Показати менше...</string>
+
+    <!-- SYNC -->
+    <string name="thirty_minutes">30 хвилин</string>
+    <string name="a_hour">1 година</string>
+    <string name="every_6_hours">6 год</string>
+    <string name="a_day">1 день (за замовчуванням)</string>
+    <string name="every_12_hours">12 год</string>
+    <string name="Manual">Вручну</string>
+    <string name="a_week">1 тиждень</string>
+    <string name="sync_max_parameters">Поточні параметри синхронізації:</string>
+    <string name="sync_default_parameters">Установити за замовчуванням</string>
+    <string name="wipe_data_meesage">Базу даних буде видалено. Вам буде запропоновано увійти знову.</string>
+    <string name="wipe_data_ok">Прийняти</string>
+    <string name="wipe_data_no">Скасувати</string>
+    <string name="SYNC_DATA">СИНХРОНІЗУВАТИ дані зараз</string>
+    <string name="SYNC_META">СИНХРОНІЗУВАТИ конфігурацію зараз</string>
+    <string name="SYNC_MANAGER">Налаштування</string>
+    <string name="refill_reserved_values">Поповнити</string>
+    <string name="settings_sms_receiver_number">SMS шлюз</string>
+    <string name="settings_sms_result_sender_number">Результат SMS відправнику </string>
+    <string name="settings_sms_module_switch">Увімкнути надсилання SMS</string>
+    <string name="settings_sms_response_wait_switch">Дочекайтеся відповіді щодо результату SMS</string>
+    <string name="settings_limit_scope">Налаштування застосовуються</string>
+    <string name="settings_limit_globally">Всюди</string>
+    <string name="settings_limit_program">за програмою</string>
+    <string name="settings_limit_ou">за організаційним підрозділом  </string>
+    <string name="settings_limit_ou_program">за орг. підрозділом та програмою</string>
+    <!-- SEARCH TRACK ENTITY -->
+
+    <!--region SETTINCS-->
+    <string name="settingsSyncData">Синхронізація даних</string>
+    <string name="settingsSyncMetadata">Синхронізація конфігурації</string>
+    <string name="settingsSyncParameters">Параметри синхронізації</string>
+    <string name="settingsReservedValues">Зарезервовані значення</string>
+    <string name="settingsReservedValues_descr">Тут Ви можете побачити кількість значень, доступних офлайн, і зарезервувати нові.</string>
+    <string name="settingsErrorLog">Відкрити журнал помилок синхронізації</string>
+    <string name="settingsErrorLog_descr">Цей журнал містить усі помилки, спричинені синхронізацією Ваших даних і метаданих.</string>
+    <string name="settingsDeleteLocalData">Видалити локальні дані</string>
+    <string name="settingsDeleteLocalData_descr">Усі дані, що зберігаються на Вашому пристрої, буде видалено. Дані, які не синхронізовані із сервером, буде втрачено.</string>
+    <string name="settingsSms">Налаштування SMS</string>
+    <string name="settingsSms_descr">Перевірте та відредагуйте параметри, що стосуються SMS-шлюзу</string>
+    <string name="settingsCheckVersion">Оновлення додатку</string>
+    <string name="settingsExportDB">Експортувати базу даних</string>
+    <string name="settingsExportDBMessage">Експортуйте базу даних і поділіться нею з адміністратором</string>
+    <string name="settingsTwoFAStatus">Статус</string>
+    <!--endregion-->
+
+    <!-- SEARCH OPTION SET -->
+    <string name="search_optionset">Пошук</string>
+    <!--FORM FRAGMENT-->
+    <string name="report_date">Дата звіту</string>
+    <string name="add_file">Додати файл</string>
+    <string name="write_new_note">Написати нову примітку</string>
+    <string name="clear">очистити</string>
+    <string name="add_note">Додати нотатку</string>
+    <string name="revert">Повернути</string>
+    <string name="activated">Активовано</string>
+    <string name="missing_mandatory_fields_title">Не заповнено обов\'язкові поля</string>
+    <string name="missing_mandatory_fields_text">Деякі обов’язкові поля не заповнено. Якщо Ви хочете повернутися зараз, уся збережена інформація буде видалена.</string>
+    <string name="missing_mandatory_fields_text_not_delete">Деякі обов’язкові поля не заповнено. Якщо Ви хочете повернутися, заповніть їх. </string>
+    <string name="title_delete_go_back">Ваші дані не збережено</string>
+    <string name="delete_go_back">Якщо Ви зараз повернетеся назад, уся введена інформація буде видалена.</string>
+    <string name="missing_mandatory_fields_go_back">Видалити та повернутися назад</string>
+    <string name="missing_mandatory_fields_finish">Деякі обов’язкові поля не заповнено. Ви можете завершити введення даних і вийти, але випадок не може бути завершений.</string>
+    <string name="tei_coordinates">Координати для</string>
+
+    <!--EVENT SUMMARY-->
+
+    <!--AGE CUSTOM VIEW-->
+    <string name="incident_date">Дата інциденту</string>
+    <string name="past_programs">Минулі програми</string>
+
+    <!--PERMISSIONS-->
+    <string name="permission_denied">Ви не маєте необхідного дозволу для виконання цієї дії</string>
+
+    <string name="period">Період</string>
+    <string name="tuto_main_1">Ласкаво просимо до dhis2</string>
+    <string name="tuto_main_2">Тут Ви можете бачити свою активність</string>
+    <string name="tuto_main_3">Ви можете застосувати фільтр…</string>
+    <string name="tuto_main_4">...змінюючи період і обираючи дати...</string>
+    <string name="tuto_main_5">…або фільтруючи за Організаційним підрозділом</string>
+    <string name="tuto_main_6">Перевірте інші дії в головному меню</string>
+
+    <!-- RELATIONSHIPS -->
+    <string name="next">Наступне</string>
+    <string name="search_min_num_attr">Для пошуку потрібно ввести принаймні %d атрибутів</string>
+
+    <!-- QR -->
+    <string name="QR_SCANNER">Імпорт QR-даних</string>
+    <string name="button_ok">ОК</string>
+    <string name="qr_id">Ідентифікація</string>
+    <string name="qr_attributes">Атрибути</string>
+    <string name="qr_enrollment">Реєстрації</string>
+    <string name="qr_events">Події</string>
+    <string name="qr_relationships">Зв\'язки</string>
+    <string name="read_more_qr">Зчитайте QR-код, щоб отримати більше інформації.</string>
+    <string name="save_qr">Зупинити зчитування та зберегти дані </string>
+    <string name="qr_no_data">немає даних</string>
+    <string name="qr_error_id">Невірний QR-код</string>
+    <string name="qr_error_attr">Цей атрибут не можна додати</string>
+
+    <string name="about">Про</string>
+    <string name="programs_to_enroll">Програми для реєстрації</string>
+    <string name="share">Поділитися</string>
+    <string name="share_qr">Поділитись QR</string>
+    <string name="max">Макс</string>
+    <string name="current">Поточний</string>
+    <string name="tei">Об’єкт, який відстежується</string>
+    <string name="teis">Об’єкти, які відстежуються</string>
+    <string name="wipe_data">Скинути дані програми &amp; конфігурацію</string>
+    <string name="warning_error_on_complete_title">Перевірити це!</string>
+    <string name="save">Зберегти</string>
+    <string name="reserved_value">Зарезервовані значення</string>
+
+    <!--ABOUT-->
+    <string name="about_app">Версія додатку: %s</string>
+    <string name="about_sdk">Версія SDK: %s</string>
+    <string name="about_connected">Підключено до: %s</string>
+    <string name="about_user">Поточний користувач: %s</string>
+    <string name="about_more">Докладніше про цей додаток: читайте <a href="https://drive.google.com/open?id=1YHRBk6LSp6uROfs19-wCfQGc-rgl2f5iDrhCDasTR8M"> тут </a> що підтримується, а що не підтримується</string>
+    <string name="about_git">Ця та попередні версії цього додатку, а також вихідний код доступні на <a href="https://github.com/dhis2/dhis2-android-capture-app"> GitHub </a> . DHIS2 Android додаток ліцензується згідно з умовами GNU General Public License, опублікованої Free Software Foundation - див. <a href="http://www.gnu.org/licenses/gpl-3.0.html">http://www.gnu.org/licenses/gpl-3.0.html</a>.</string>
+    <string name="about_dev">Розроблено та підтримується  <a href="https://www.dhis2.org/"> DHIS2 </a>проєктом, який є частиною Університету Осло, <a href="https://www.mn.uio.no/ifi/english/"> факультету інформатики </a> .</string>
+    <string name="about_contact">Щоб отримати додаткову інформацію або отримати відповіді на запитання щодо цієї програми, напишіть на <a href="mailto:android@dhis2.org"> android@dhis2.org </a></string>
+
+    <string name="search_program_not_selected">Оберіть програму, щоб розпочати реєстрацію</string>
+    <string name="search_access_error">Ви не маєте необхідного дозволу</string>
+    <string name="all_tei_type">Усі %s</string>
+    <string name="invalid_phone_number">Це недійсний номер телефону</string>
+    <string name="invalid_possitive_zero">Дозволені лише додатні числа або нуль</string>
+    <string name="select_option">Обрати опцію</string>
+    <string name="event_completed_title">Завершені випадки</string>
+    <string name="event_completed_message">Усі випадки цієї програми завершено. Ви бажаєте закрити також і програму?</string>
+    <string name="check_event">Перевірка</string>
+
+    <string name="menu_home">Головна</string>
+    <string name="appwidget_text">ПРИКЛАД</string>
+    <string name="showHelp">Показати допомогу</string>
+    <string name="tuto_dashboard_1">Це інформаційна панель об\'єкту, який відстежується</string>
+    <string name="tuto_dashboard_2">Переглянути інформацію про профіль об\'єкту, який відстежується…</string>
+    <string name="tuto_dashboard_6">Тут Ви побачите усі випадки. Натисніть, щоб переглянути деталі випадку.</string>
+    <string name="tuto_dashboard_7">Скористайтесь меню, щоб додати зв’язки, переглянути індикатори або написати примітки.</string>
+    <string name="tuto_event_initial_new_1">Введіть усі дані для створення випадку</string>
+    <string name="tuto_event_initial_1">Натисніть, щоб перевірити статус завершення випадку.</string>
+    <string name="relationships">зв\'язки</string>
+    <string name="empty_tei_add">Немає зареєстрованих випадків, натисніть «+», щоб додати новий.</string>
+    <string name="qr_data_values">Значення даних</string>
+    <string name="info">Інформація</string>
+    <string name="qr_no_id_error">Не вдалося прочитати цей ідентифікатор</string>
+    <string name="delete_local_data">Видалити локальні дані</string>
+    <string name="dashboard_overview">Огляд</string>
+    <string name="empty_indicators">Індикаторів для цієї програми немає.</string>
+    <string name="unselect_enrollment">Усі реєстрації</string>
+    <string name="unselect_enrollment_description">Показати інформаційну панель з усіма активними програмами</string>
+    <string name="error_dialog_title">Журнал помилок синхронізації</string>
+    <string name="share_with">Поділитися з...</string>
+    <string name="unique_warning">Значення має бути унікальним, знайдено збіг. Значення не збереглось. Будь ласка, перевірте це.</string>
+    <string name="please_wait">Будь ласка, почекайте</string>
+    <string name="skip">Пропустити</string>
+    <string name="no_intructions">Для цієї частини немає інформації</string>
+    <string name="delete_local_data_message">Несинхронізовані дані буде втрачено. Ви дійсно хочете продовжити?</string>
+    <string name="delete_local_data_error">Не вдалося видалити дані. Будь ласка, повторіть спробу.</string>
+    <string name="delete_local_data_done">Видалення локальних даних успішно завершено.</string>
+    <string name="org_unit_selection_warning">Необхідно вибрати принаймні один організаційний підрозділ</string>
+    <string name="send_user_name_title">Надіслати дані</string>
+    <string name="send_user_name_mesage">Допоможіть DHIS2 покращити цей додаток, поділившись журналами помилок, пов’язаними з Вашим ідентифікатором користувача.</string>
+    <string name="improve_app_msg_title">Ви хочете допомогти нам покращити цю програму?</string>
+    <string name="check_mandatory_field">Перевірте поля</string>
+    <string name="error_no_network_during_sync">Під час синхронізації конфігурації з’єднання з Інтернетом було втрачено. Будь-ласка спробуйте пізніше</string>
+    <string name="action_agree">Погодитись</string>
+    <string name="action_continue">Продовжити</string>
+    <string name="login_server_info_title">URL-адреса серверу</string>
+    <string name="login_server_info_message">Введіть URL-адресу серверу DHIS 2 для Вашої організації, надану Вашим системним адміністратором. Альтернативно, Ви можете відсканувати QR-код, що містить URL-адресу Вашого сервера</string>
+    <string name="forgot_your_code">Забули код?</string>
+    <string name="event_form_end_options_title">Що б Ви хотіли зробити для цього випадку?</string>
+    <string name="sectionSelectorEnd">КІН</string>
+    <string name="resource_not_found">%s не знайдено</string>
+    <string name="relationship_not_found_message">Запис, до якого Ви намагаєтеся отримати доступ, недоступний. Ви б хотіли його пошукати?</string>
+    <string name="sync_by_sms">Синхронізовано через SMS</string>
+    <string name="state_warning">Попередження</string>
+    <string name="state_uploading">Завантаження</string>
+    <string name="state_relationship">Зв\'язок</string>
+    <string name="sent_by_sms">Надіслано через SMS</string>
+    <string name="action_close">Закрити</string>
+    <string name="tuto_main_11">Тепер Ви можете перевірити інформацію про синхронізацію, натиснувши тут</string>
+    <string name="relationship_error_recursive">Ви не можете пов\'язати запис із самим собою</string>
+    <string name="change_calendar_view">Змінити вид календаря</string>
+    <string name="relationship_without_enrollment">Запис, до якого Ви намагаєтеся отримати доступ, не зареєстрований. Ви не можете отримати доступ до інформаційної панелі.</string>
+    <string name="formatting_error">Помилка форматування</string>
+    <string name="dashboard_menu_delete_tei_v2">Видалити %s</string>
+    <string name="delete_authority_error">Ви не маєте повноважень видаляти цей запис</string>
+    <string name="adjusting_form">Коригування форми…</string>
+
+    <string name="sms_amount_question">Чи підтверджуєте надсилання %dповідомлень ?</string>
+    <string name="sms_sending">Надсилання %1$d/%2$d</string>
+    <string name="sms_waiting_amount_confirm">Очікування обсягу підтвердження - %d</string>
+    <string name="sms_all_sent">Все відправлено</string>
+    <string name="sms_submission_completed">Подання завершено</string>
+    <string name="sms_waiting_confirmation">Очікування SMS підтвердження</string>
+    <string name="sms_waiting_timeout">Повідомлення про підтвердження не отримано</string>
+    <string name="sms_confirmed">Повідомлення про підтвердження отримано</string>
+    <string name="sms_error">Помилка відправки</string>
+    <string name="sms_error_item_not_ready">Елемент даних не готовий до відправки</string>
+    <string name="sms_error_no_network">Немає мережі</string>
+    <string name="sms_error_no_check_network_permission">Немає дозволу перевірки мережі</string>
+    <string name="sms_error_no_receive_sms_permission">Немає дозволу на отримання SMS</string>
+    <string name="sms_error_no_send_sms_permission">Немає дозволу на відправку</string>
+    <string name="sms_error_no_gateway_set">Шлюз не встановлено</string>
+    <string name="sms_error_no_user_login">Користувач не ввійшов у систему</string>
+    <string name="sms_error_module_disabled">SMS модуль вимкнено</string>
+    <string name="sms_metadata_empty">Модуль SMS не запущено, необхідні метадані не знайдені</string>
+    <string name="sms_count_error">Підрахунок SMS не приймається</string>
+    <string name="sms_state_started">Розпочато відправку SMS</string>
+    <string name="sms_state_converted">Дані зчитано та конвертовано. Ідентифікатор подання: %d</string>
+    <string name="sms_title_enrollment">Реєстрація об\'єкту, який відстежується, та випадку за допомогою SMS </string>
+    <string name="sms_title_event">Надсилання випадку через SMS</string>
+    <string name="sms_title_data_set">Надсилання набору даних через SMS</string>
+
+    <string name="syncing">Синхронізація...</string>
+
+    <string name="copied_text">Скопійовано</string>
+
+    <!--region TRACKER IMPORT CONFLICT MESSAGES-->
+    <string name="polygon">Багатокутник</string>
+    <!--endregion-->
+
+    <string name="security_title">Безпека</string>
+    <string name="security_rooted_message">З міркувань безпеки цю версію додатку не можна використовувати на пристроях з кореневим доступом. Будь ласка, використовуйте навчальну версію.</string>
+
+    <string name="filters_active">Застосовано фільтри</string>
+    <string name="filters_disabled">Фільтрів не застосовано</string>
+    <string name="filters_title_period">Період</string>
+    <string name="filters_title_org_unit">Орг. підрозділ</string>
+    <string name="filters_title_state">Синхронізація</string>
+    <string name="filters_title_assigned">Призначено мені</string>
+    <string name="filter_period_today">Сьогодні</string>
+    <string name="filter_period_yesterday">Вчора</string>
+    <string name="filter_period_tomorrow">Завтра</string>
+    <string name="filter_period_this_week">Поточний тиждень</string>
+    <string name="filter_period_last_week">Минулий тиждень</string>
+    <string name="filter_perdior_next_week">Наступний тиждень</string>
+    <string name="filter_period_this_month">Поточний місяць</string>
+    <string name="filter_period_last_month">Останній місяць</string>
+    <string name="filter_period_next_month">Наступний місяць</string>
+    <string name="filter_period_form_to">Від - До</string>
+    <string name="filter_period_other">Інше</string>
+    <string name="filter_period_any">Будь-коли</string>
+    <string name="filter_event_status_open">Відкрити</string>
+    <string name="filter_event_status_schedule">Запланувати</string>
+    <string name="filter_event_status_overdue">Прострочено</string>
+    <string name="filter_event_status_visited">Відвідано</string>
+    <string name="filter_event_status_completed">Завершено</string>
+    <string name="filter_event_status_skipped">Пропущено</string>
+    <string name="event_tei_limits">Випадки:%sмакс:%s%sпоточн:%s Об\'єкти:%sмакс:%s%sпоточн%s</string>
+    <string name="enrollment_data_hide">Приховати дані реєстрації</string>
+    <string name="enrollment_data_show">Показати дані реєстрації</string>
+    <string name="sms_enabled">SMS-модуль включений</string>
+    <string name="sms_disabled">SMS-модуль відключений</string>
+    <string name="sms_downloading_data">Завантаження даних для модуля SMS. Будь ласка, зачекайте</string>
+    <string name="sms_empty_gateway">SMS-шлюз не може бути порожнім</string>
+    <string name="granular_sync_enrollments_empty">Немає реєстрацій для завантаження</string>
+    <string name="granular_sync_unsupported_task">Цей convertTask не підтримується</string>
+    <string name="set_pin">Встановити PIN</string>
+    <string name="conflict">Помилка</string>
+    <string name="change_event_date">Змінити дату</string>
+    <string name="go_back">Повернутися</string>
+    <string name="data_sets">Набори даних</string>
+    <string name="no_notes">Приміток немає</string>
+    <string name="no_add_notes">Додати більше приміток неможливо </string>
+    <string name="new_note">Нова примітка</string>
+    <string name="note_saved">Примітку збережено</string>
+    <string name="discard_note">Відхилити примітку?</string>
+    <string name="interval_now">зараз</string>
+    <string name="interval_minute_ago">%d хв. тому</string>
+    <string name="interval_hour_ago">%d годин тому</string>
+    <string name="interval_yesterday">Вчора</string>
+    <string name="enrollment_single_section_label">Атрибути - %s</string>
+    <string name="select_time">Оберіть час</string>
+    <string name="enter_letter">Введіть літеру</string>
+    <string name="enter_unit_interval">Введіть число від 0 до 1</string>
+    <string name="enter_percentage">Введіть відсоток</string>
+    <string name="enter_phone_number">Введіть номер телефону</string>
+    <string name="enter_email">Введіть адресу електронної пошти</string>
+    <string name="choose_ou">Оберіть організаційний підрозділ</string>
+    <string name="enter_url">Введіть URL-адресу</string>
+    <string name="enter_value">Введіть значення</string>
+    <string name="reserved_values_hint">Зарезервовані значення, завантажені для атрибута об\'єкту</string>
+    <string name="reserved_values_left">%s залишилося зарезервованих значень</string>
+    <string name="manage_reserved_values_button">Управління зарезервованими значеннями</string>
+    <string name="events_to_download">Випадків для завантаження</string>
+    <string name="teis_to_download">Об\'єктів для завантаження</string>
+    <string name="program_settings">Налаштування програми</string>
+    <string name="limit_scope_all_ou_trailing">для усіх організаційних підрозділів</string>
+    <string name="limit_scope_global_trailing">всюди</string>
+    <string name="limit_scope_ou_trailing">на організаційний підрозділ</string>
+    <string name="limit_scope_program_trailing">на програму</string>
+    <string name="limit_scope_ou_program_trailing">на орг. підрозділ та програму</string>
+    <string name="activity_program_settings">Налаштування синхронізації програми</string>
+    <string name="syncing_period_not_editable">Період синхронізації не можна редагувати</string>
+    <string name="sync_parameters_not_editable">Параметри синхронізації не можна редагувати</string>
+    <string name="rv_no_editable">Кількість зарезервованих завантажених значень не можна редагувати</string>
+    <string name="downloading">Завантаження</string>
+    <string name="filter_sync_synced">Синхронізовано</string>
+    <string name="filter_sync_not_synced">Не синхронізовано</string>
+    <string name="filter_sync_error">Помилка синхронізації</string>
+    <string name="filter_sync_sms">Синхронізовано через SMS</string>
+    <string name="saved">Збережено!</string>
+    <string name="fk_message">Відсутній %s %s від %s %s</string>
+    <string name="filters_title_event_status">Статус випадку</string>
+    <string name="dataset_empty_list_can_create">Немає даних. Натисніть «+», щоб додати новий запис</string>
+    <string name="dataset_emtpy_list_can_not_create">Немає даних. Ви не маєте дозволу додавати нові записи.</string>
+    <string name="validation_rules_empty_description">Немає опису чи інструкції</string>
+    <string name="validation_rules_data_to_review">Дані для перегляду</string>
+    <string name="status_change_error_active_exist">Вже є активна реєстрація</string>
+    <string name="enrollment_status_active">Відкрити</string>
+    <string name="enrollment_status_completed">Завершити</string>
+    <string name="enrollment_status_cancelled">Скасовано</string>
+    <string name="download_tei_error">Не вдалося завантажити вибраний %s.</string>
+    <string name="filters_title_date">Дата</string>
+    <string name="privacy_policy_title">Політика конфіденційності</string>
+    <string name="open_privacy_policy">Натисніть тут, щоб ознайомитися з нашою <a href=""> політикою конфіденційності </a></string>
+    <string name="coordinates_error">Значення координат недійсні</string>
+    <string name="break_glass_error_v2">Ви не можете зареєструвати %s з інших організаційних підрозділів у цій програмі, оскільки вона закрита для Вас. Зверніться до свого адміністратора.</string>
+    <string name="field_is_mandatory">Це поле обов\'язкове для заповнення</string>
+    <string name="security_debugger_message">З міркувань безпеки цю версію додатку не можна використовувати з adb. Будь ласка, використовуйте навчальну версію.</string>
+
+    <string name="customactivityoncrash_error_activity_restart_app">Повернутися</string>
+    <string name="customactivityoncrash_error_activity_error_details_copy">Копіювати в буфер обміну</string>
+    <string name="metada_first_sync_error">Ми знайшли помилку під час синхронізації з Вашим сервером. Якщо можливо, повідомте про помилку системному адміністратору.</string>
+    <string name="enrollment_date_edition_warning">Є заплановані випадки, які не будуть перенесені</string>
+    <string name="section_charts">Діаграми</string>
+    <string name="navigation_list_view">Список</string>
+    <string name="navigation_table_view">У вигляді таблиці</string>
+    <string name="navigation_map_view">Мапа</string>
+    <string name="navigation_analytics">Аналітика</string>
+    <string name="navigation_tasks">Завдання</string>
+    <string name="navigation_programs">Програми</string>
+    <string name="navigation_charts">Діаграми</string>
+    <string name="navigation_notes">Примітки</string>
+    <string name="navigation_data_entry">Введення даних</string>
+    <string name="navigation_tei_data">Деталі</string>
+    <string name="show_bar_graph">Переглянути як стовпчикову діаграму</string>
+    <string name="show_line_graph">Переглянути як лінійний графік</string>
+    <string name="show_table_graph">Переглянути як таблицю</string>
+    <string name="show_table_value">Переглянути як значення</string>
+    <string name="show_pie_value">Переглянути як кругову діаграму</string>
+    <string name="working_list_default_label">Робочий список %s</string>
+    <string name="filter_period_last_n_days">Попередні %d днів</string>
+    <string name="filter_period_this_year">Поточний рік</string>
+    <string name="filter_period_this_bimonth">Поточний двомісячний період</string>
+    <string name="filter_period_last_bimonth">Попередній двомісячний період</string>
+    <string name="filter_period_this_quarter">Поточний квартал</string>
+    <string name="filter_period_last_quarter">Минулий квартал</string>
+    <string name="filter_period_six_months">Поточні шість місяців </string>
+    <string name="filter_period_last_six_months">Минулі шість місяців</string>
+    <string name="filter_period_last_n_years">Минулі %d роки</string>
+    <string name="filter_period_last_n_months">Минулі %d місяці</string>
+    <string name="filter_period__last_n_weeks">Минулі %d тижні</string>
+    <string name="filter_period_weeks_this_year">Тижні поточного року</string>
+    <string name="filter_period_months_this_year">Місяці поточного року</string>
+    <string name="filter_period_bimonths_this_year">Двомісячні періоди поточного року</string>
+    <string name="filter_period_quarters_this_year">Квартали поточного року</string>
+    <string name="filter_period_months_last_year">Місяці минулого року</string>
+    <string name="filter_period_quarters_last_year">Квартали минулих років</string>
+    <string name="filter_period_last_year">Минулий рік</string>
+    <string name="filter_period_this_biweek">Поточний двотижневий період</string>
+    <string name="filter_period_last_biweek">Минулий двотижневий період</string>
+    <string name="filter_period_last_n_bimonths">Минулі %d двомісячні періоди </string>
+    <string name="filter_period_last_n_quarters">Минулі %dквартали </string>
+    <string name="last_n_months">Минулі %d місяці</string>
+    <string name="filter_period_this_financial_year">Поточний фінансовий рік</string>
+    <string name="filter_period_last_financial_year">Минулий фінансовий рік</string>
+    <string name="filter_period_last_n_financial_years">Минулі %d фінансові роки</string>
+    <string name="filter_period_last_n_biweeks">Минулі %d двотижневі періоди</string>
+    <string name="section_feedback">Відгук</string>
+    <string name="section_indicators">Показники</string>
+    <string name="value">Значення</string>
+    <string name="camera_permission_denied">Відмовлено у використанні камери. Вам потрібно ввімкнути цей дозвіл, щоб використовувати цю функцію.</string>
+    <string name="section_charts_indicators">Діаграми та індикатори</string>
+    <string name="take_photo">Зробити фото</string>
+    <string name="break_glass_dialog_title">Ця програма закрита для Вас</string>
+    <string name="break_glass_hint">Опишіть причину тут</string>
+    <string name="openid_session_expired">Сесія неактивна</string>
+    <string name="openid_session_expired_message">Ваша поточна сесія неактивна. З міркувань безпеки Вам потрібно знову ввести свої облікові дані</string>
+    <string name="week_period_span_default_label">Тиждень %d %s до %s</string>
+    <string name="action_do_not_show_again">Не показувати знову</string>
+    <string name="feature_configuration">Конфігурація функції</string>
+    <string name="show_radar_graph">Показати як діаграму Радар</string>
+    <string name="filter_follow_up_label">Для подальших дій %s</string>
+    <string name="update_field_error">Це поле не вдалося оновити. Будь ласка спробуйте ще раз</string>
+    <string name="blocked_by_completion">Ці дані не можна редагувати, оскільки вони позначені як завершені</string>
+    <string name="edition_expired">Ці дані не можна редагувати, оскільки час їх редагування минув</string>
+    <string name="edition_no_write_access">Ви не маєте дозволу редагувати ці дані</string>
+    <string name="event_date_not_in_orgunit_range">Ці дані не можна редагувати, оскільки організаційний підрозділ закрито</string>
+    <string name="edition_no_catcombo_access">Ви не маєте дозволу редагувати ці дані</string>
+    <string name="edition_orgunit_user_scope">Ви не можете редагувати дані з цього організаційного підрозділу</string>
+    <string name="error_tei_online_search_title">Онлайн-пошук дав таке повідомлення:</string>
+    <string name="delete_account">Видалити обліковий запис</string>
+    <string name="main_menu_troubleshooting">Усунення несправностей конфігурації</string>
+    <string name="troubleshooting_language_title">Мова</string>
+    <string name="troubleshooting_language_description">Натисніть тут, щоб змінити мову додатку</string>
+    <string name="troubleshooting_rules_title">Перевірка правил програми</string>
+    <string name="troubleshooting_rules_description">Ця дія перевірить усі налаштовані правила та відобразить неправильні конфігурації, якщо такі є</string>
+    <string name="troubleshooting_ongoing_rule_validation">Перевірка правил програми…</string>
+    <string name="troubleshooting_pass_rule_validation">Попереджень не знайдено</string>
+    <string name="troobleshooting_pass_rule_validation_title">Все виглядає чудово</string>
+    <string name="not_saved">Не збережено</string>
+    <string name="search_loading_more">Завантаження результатів</string>
+    <string name="search_no_results_in_program">Результатів для %s не знайдено</string>
+    <string name="search_outside_action">Пошук за межами цієї програми</string>
+    <string name="string_no_more_results">Результатів не знайдено</string>
+    <string name="search_no_more_results_offline">Пошук результатів</string>
+    <string name="search_no_results">Для цього пошуку результатів немає </string>
+    <string name="search_too_many_results">Забагато результатів</string>
+    <string name="search_too_many_results_message">Спробуйте змінити пошук, щоб звузити результати.</string>
+    <string name="search_new_te_type">Новий 1%s</string>
+    <string name="action_ok">OK</string>
+    <string name="init_search">Почніть пошук, щоб знайти будь-який %s</string>
+    <string name="search_or_create">Ви можете знайти або створити новий %s</string>
+    <string name="event_can_be_completed">Ви бажаєте позначити цю форму як завершену?</string>
+    <string name="changes_will_be_discarted">Якщо Ви зараз вийдете, зміни буде скасовано.</string>
+    <string name="event_error_on_complete">У вас є кілька повідомлень про помилки. Бажаєте їх переглянути?</string>
+    <string name="re_opened">Відкрито знову</string>
+    <string name="account_disable_title">Обліковий запис вимкнено</string>
+    <string name="account_disable_message">Ваш обліковий запис було вимкнено адміністратором.</string>
+    <string name="search_unable_search_outside">Для пошуку за межами цієї програми відкрийте форму пошуку та заповніть одне з наступних %s полів:</string>
+    <string name="customactivityoncrash_error_activity_build_version">Версія збірки: %s</string>
+    <string name="customactivityoncrash_error_activity_buid_date">Дата збірки: %s</string>
+    <string name="customactivityoncrash_error_activity_current_date">Поточна дата: %s</string>
+    <string name="customactivityoncrash_error_activity_device">Пристрій: %s</string>
+    <string name="customactivityoncrash_error_activity_os_version">Версія ОС: %s</string>
+    <string name="syncing_resource">Синхронізація %s…</string>
+    <string name="sms_sync_sms_app_chooser_title">Надіслати SMS за допомогою</string>
+    <string name="enrolledIn">Зареєстровано в:</string>
+    <string name="ownedBy">Власник:</string>
+    <string name="sync_dialog_title_not_synced">Потрібна синхронізація</string>
+    <string name="sync_dialog_title_synced">Синхронізовано</string>
+    <string name="sync_dialog_message_not_synced_tei">Ви хочете відправити зміни по цьому %s</string>
+    <string name="sync_dialog_action_send">Надіслати</string>
+    <string name="sync_dialog_action_not_now">Не зараз</string>
+    <string name="software_update">Оновлення додатку</string>
+    <string name="check_for_updates">Перевірити оновлення</string>
+    <string name="no_updates">Оновлення відсутні</string>
+    <string name="app_version">Версія додатку</string>
+    <string name="not_synced">Не синхронізовано</string>
+    <string name="overdue">Прострочений %s</string>
+    <string name="registered_in">Зареєстровано в</string>
+    <string name="view_only">Тільки перегляд</string>
+    <string name="skipped">Пропущено</string>
+    <string name="programs">Програми</string>
+    <string name="sync_successful">Синхронізація успішна</string>
+    <string name="sync_error">Помилка синхронізації</string>
+    <string name="mark_follow_up">Позначити для подальших дій</string>
+    <string name="schedule_next">Запланувати наступний</string>
+    <string name="schedule">Запланувати</string>
+    <string name="enter">Введіть</string>
+    <string name="refer">Перенаправити</string>
+    <string name="scheduled_enter_event">Заплановано</string>
+    <string name="enter_event">Введіть %1$s</string>
+    <string name="program_stage">Етап програми</string>
+    <string name="event">подія</string>
+    <string name="show_more">Показати більше</string>
+    <string name="show_less">Показати менше</string>
+    <string name="sync">Синхронізація</string>
+    <string name="syncing_something">Синхронізація %s…</string>
+    <string name="show_description">Показати опис</string>
+    <string name="hide_description">Приховати опис</string>
+    <string name="transfer">Перевести</string>
+    <plurals name="settings_specific_programs">
+        <item quantity="one">Є програма %s зі специфічними налаштуваннями</item>
+        <item quantity="few">Є програми %s зі спеціальними налаштуваннями</item>
+        <item quantity="many">Є програми %s зі спеціальними налаштуваннями</item>
+        <item quantity="other">Є програми %s зі спеціальними налаштуваннями</item>
+    </plurals>
+</resources>

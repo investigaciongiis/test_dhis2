@@ -1,0 +1,129 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">Quản lý kho dược phẩm</string>
+    <string name="title_activity_home">Trang chủ</string>
+
+    <string name="distribution">Phân bổ</string>
+    <string name="discard">Hủy bỏ</string>
+    <string name="correction">Điểu chỉnh</string>
+
+    <!-- Sign in -->
+    <string name="username">Tên đăng nhập</string>
+
+    <!-- Sync -->
+    <string name="metadata_sync_error">Không thể hoàn thành đồng bộ siêu dữ liệu</string>
+
+    <!-- FloatingActionButtons -->
+    <string name="review">Xem xét</string>
+
+    <string name="search">Tìm kiếm</string>
+    <string name="search_placeholder">Tìm kiếm...</string>
+    <string name="delete">Xóa</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+
+    <string name="from">Từ</string>
+    <string name="to">Gửi đến...</string>
+    <string name="subtitle">%s</string>
+
+    <!-- Languages -->
+
+    <!-- Settings -->
+
+    <!-- Stock table -->
+    <string name="quantity">Số lượng</string>
+
+    <!-- Messages -->
+    <string name="mandatory_facility_selection">
+        Điền đầy đủ các trường dữ liệu cơ sở trước khi bạn có thể tiếp tục
+    </string>
+    <string name="transaction_completed">
+        Giao dịch vưa được hoàn thành!
+    </string>
+
+    <!-- Errors -->
+    <string name="facilities_load_error">Không thể tải danh sách các cơ sở hiện có</string>
+    <string name="destinations_load_error">
+        Không thể tải danh sách các điểm đến hiện có
+    </string>
+
+    <!-- Content descriptions for accessibility -->
+
+    <string name="confirm_transaction_label">Xác nhận</string>
+
+    <string name="stock_on_hand_exceeded_message">
+        Số lượng hàng có sẵn không thể vượt quá
+    </string>
+
+    <string name="permission_granted">Đã được cho phép</string>
+    <string name="permission_denied">Quyền bị tự chối</string>
+
+    <!-- Speech error messages -->
+    <string name="insufficient_speech_permissions_error">
+        Không đủ quyền. Yêu cầu android.permission.RECORD_AUDIO
+    </string>
+    <string name="speech_audio_error">Lỗi ghi âm</string>
+    <string name="speech_client_error">
+        Lỗi ở máy khách. Xin vui lòng kiểm tra kết nối internet của bạn!
+    </string>
+    <string name="speech_network_error">Lỗi mạng</string>
+    <string name="speech_network_timeout_error">Hết thời gian hoạt động mạng</string>
+    <string name="no_speech_match_error">Không có kết quả nhận dạng phù hợp.</string>
+    <string name="speech_recognition_service_busy_error">Dịch vụ nhận dạng đang bận</string>
+    <string name="speech_server_error">Một lỗi đã xuất hiện trên máy chủ</string>
+    <string name="speech_timeout_error">Không nhận được đầu vào bằng giọng nói</string>
+    <string name="unknown_speech_error">Một lỗi không xác định đã xuất hiện.</string>
+    <string name="non_numeric_speech_input_error">Không chấp nhận đầu vào không phải là số: \"%s\"</string>
+    <string name="negative_number_speech_input_error">\n        Không chấp nhận đầu vào là số âm: \"%s\"\n    </string>
+
+    <string name="unable_to_sync_data_no_network_available">
+        Không thể đồng bộ hóa dữ liệu bởi vì không có kết nối internet
+    </string>
+
+    <!--SDK error codes-->
+    <string name="login_error_unsuccessful_response">Có gì đó không đúng. Vui lòng kiểm tra đường dẫn liên kết đến máy chủ, tên đăng nhập, mật khẩu và thử lại.</string>
+    <string name="login_error_error_response">Ồ! Đã xảy ra lỗi ở phía máy chủ.</string>
+    <string name="login_error_no_dhis_instance">Liên kết URL được cung cấp không phải là máy chủ DHIS2.</string>
+    <string name="login_error_bad_credentials">Tên đăng nhập và/hoặc mật khẩu không đúng</string>
+    <string name="login_error_unknown_host">Máy chủ không xác định</string>
+    <string name="online_search_parsing_error">Xảy ra lỗi khi chuyển đổi kết quả</string>
+    <string name="error_unexpected">Đã xảy ra lỗi không mong muốn.</string>
+    <string name="error_many_requests">Máy chủ đang bận. Xin vui lòng thử lại sau.</string>
+    <string name="error_already_authenticated">Người dùng đã được đăng nhập.</string>
+    <string name="error_already_executed">Yêu cầu đã được thực hiện.</string>
+    <string name="error_api_invalid_query">Yêu cầu máy chủ không hợp lệ.</string>
+    <string name="error_create_existing_error">Không thể tạo. Đối tượng đang tồn tại.</string>
+    <string name="error_export_login">Vui lòng đăng nhập để xuất cơ sở dữ liệu.</string>
+    <string name="error_export_encrypted">Xuất dữ liệu mã hóa không hỗ trợ</string>
+    <string name="error_import_exist">Bạn đang nhập cơ sở dữ liệu đang tồn tại</string>
+    <string name="error_import_logout">Vui lòng đăng xuất để nhập cơ sở dữ liệu mới</string>
+    <string name="error_import_version">Phiên bản của cơ sở dữ liệu được nhập cao hơn phiên bản được hỗ trợ</string>
+    <string name="error_user_no_authenticated">Không có người dùng được xác thực.</string>
+    <string name="error_user_no_authenticated_offline">Không có người dùng được xác thực ngoại tuyến</string>
+    <string name="error_different_offline_user">Bạn đang cố gắng đăng nhập ngoại tuyến với tên đăng nhập khác.</string>
+    <string name="error_object_update">Không thể cập nhật đối tượng.</string>
+    <string name="error_object_insert">Không thể thêm đối tượng</string>
+    <string name="error_ownership_access">Bạn không có quyền truy cập.</string>
+    <string name="error_null_url">Thiếu đường dẫn liên kết đến máy chủ. Vui lòng nhập đường dẫn liên kết.</string>
+    <string name="error_server_malformed">Đường dẫn liên kết đến máy chủ không hợp lệ. Vui lòng kiểm tra lại</string>
+    <string name="error_settings_app_not_supported">Phiên bản của Cài Đặt Ứng Dụng Web này không hỗ trợ</string>
+    <string name="error_settings_app_not_intalled">Cài Đặt Ứng Dụng Web không được cài trong máy chủ.</string>
+    <string name="error_socket_timeout">Máy chủ mất quá nhiều thời gian để trả lời. Chúng tôi đã hủy yêu cầu.</string>
+    <string name="error_url_not_found">Chúng tôi không thể tìm thấy đường dẫn liên kết. Vui lòng kiểm tra lại.</string>
+    <string name="error_account_disabled">Tài khoảng của bạn đã bị vô hiệu hóa. Nếu đây là lỗi, vui lòng liên hệ quản lý của bạn.</string>
+    <string name="error_account_locked">Tài khoảng của bạn đã bị khóa. Nếu đây là lỗi, vui lòng liên hệ quản lý của bạn.</string>
+    <string name="error_set_value">Giá trị không thể được thiết lập</string>
+    <string name="error_ssl">Có vấn đề với chứng nhận máy chủ. Vui lòng liên hệ với quản lý của bạn.</string>
+    <string name="done_task">Trang chủ</string>
+    <string name="back">Quay lại</string>
+    <string name="from_facility">Từ cơ sở</string>
+    <string name="to_facility">Đến cơ sở</string>
+    <string name="stock">Kho</string>
+    <string name="not_saved">Chưa lưu</string>
+    <string name="transaction_not_confirmed">Giao dịch chưa được xác nhận. Nếu bạn thoát bây giờ, dữ liệu đã nhập sẽ bị hủy bỏ.</string>
+    <string name="transaction_discarted">Giao dịch này chưa được xác nhận. Nếu bạn thay đổi cài đặt, dữ liệu đã nhập sẽ bị hủy bỏ.</string>
+    <string name="count">Đếm</string>
+    <string name="under_review">Đang được xem xét</string>
+    <string name="formatting_error">Lỗi định dạng</string>
+    <string name="invalid_possitive_zero">Chỉ cho phép số dương hoặc số 0</string>
+    <string name="leading_zero_error">Không chấp nhận số 0 đứng trước</string>
+</resources>

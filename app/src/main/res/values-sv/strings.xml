@@ -1,0 +1,209 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!--GENERAL-->
+    <string name="app_name">DHIS2</string>
+    <!-- Warnings and error messages -->
+    <string name="error">Fel</string>
+    <string name="something_wrong">Något gick fel</string>
+    <!-- SyncService strings: -->
+
+    <string name="sync_events">Händelser</string>
+
+    <string name="sync_error_title">Synkroniseringsfel</string>
+    <string name="sync_error_text">Ett fel har inträffat under synkroniseringen. Försök igen.</string>
+    <string name="referral">Remiss</string>
+
+    <!-- Login -->
+    <string name="syncing_configuration">Synkronisera din konfiguration</string>
+    <string name="syncing_data_shortly">Dina data kommer snart att synkroniseras</string>
+    <string name="syncing_data">Synkronisera dina data</string>
+    <string name="configuration_ready">Din konfiguration är klar</string>
+    <string name="data_ready">Dina data är klara</string>
+    <string name="account_recovery">kontoåterställning</string>
+
+    <!--PERIOD-->
+    <string name="DAILY">Dagligen</string>
+    <string name="WEEKLY">Varje vecka</string>
+    <string name="MONTHLY">En gång i månaden</string>
+    <string name="YEARLY">Årlig</string>
+    <string name="clear_filters">Rensa filter</string>
+    <string name="action_accept">Acceptera</string>
+    <string name="action_share_zero_items">Dela med sig</string>
+    <!-- Input hints -->
+    <string name="search">Sök</string>
+    <string name="enter_text">Ange text</string>
+    <string name="enter_long_text">Ange långtext</string>
+    <string name="enter_number">Ange ett nummer</string>
+    <string name="enter_negative_integer">Ange ett negativt heltal</string>
+    <string name="enter_positive_integer_or_zero">Ange ett positivt heltal eller noll.</string>
+    <string name="enter_positive_integer">Ange ett positivt heltal</string>
+    <string name="choose_date">Välj datum</string>
+
+    <!-- Status -->
+
+    <string name="event_open">Öppen</string>
+    <string name="read_only">read only</string>
+    <string name="completed">Avklarad</string>
+    <string name="cancelled">Avbruten</string>
+    <string name="active">Aktiva</string>
+
+    <!-- State -->
+    <string name="state_synced">Synkronisera</string>
+    <string name="state_to_update">Att uppdatera</string>
+    <string name="state_error">Fel</string>
+
+    <!--Completion-->
+
+    <!--Event initial-->
+    <string name="update">Uppdatera</string>
+    <string name="org_unit">Organisationsenhet</string>
+    <string name="latitude">Latitud</string>
+    <string name="longitude">Longitud</string>
+
+    <!--Event Detail-->
+    <string name="due_date">Förfallodatum</string>
+    <string name="cat_combo">Kategori kombination</string>
+    <string name="cancel">Avbryt</string>
+    <string name="delete">Radera</string>
+    <string name="active_programs">Aktiva program</string>
+    <string name="enroll">Registrera</string>
+
+    <!--TEI DASHBOARD-->
+    <string name="edit">Redigera</string>
+    <string name="deactivate">Inaktivera</string>
+    <string name="program_not_allow_events">Det här programmet tillåter inte fler händelser</string>
+
+    <!--DONE TASKS-->
+    <string name="events">händelser</string>
+    <string name="done_task">Hem</string>
+    <string name="log_out">Logga ut</string>
+    <string name="a_hour">1 timme</string>
+    <string name="a_day">1 dag (Standard)</string>
+    <string name="Manual">Manuell</string>
+    <string name="a_week">1 vecka</string>
+    <string name="sync_max_parameters">Nuvarande synkroniseringsparametrar</string>
+    <string name="sync_default_parameters">Återställ till standardvärden</string>
+    <string name="wipe_data_meesage">Databasen kommer att raderas\nDu måste logga in igen.</string>
+    <string name="wipe_data_ok">Acceptera</string>
+    <string name="wipe_data_no">Avbryt</string>
+    <string name="SYNC_DATA">Synkronisera data nu</string>
+    <string name="SYNC_META">Synkronisera konfigurationen nu</string>
+    <string name="SYNC_MANAGER">Inställningar</string>
+    <string name="settingsTwoFAStatus">Status</string>
+    <!--endregion-->
+
+    <!-- SEARCH OPTION SET -->
+    <string name="search_optionset">Sök</string>
+    <!--FORM FRAGMENT-->
+    <string name="report_date">Rapportdatum</string>
+    <string name="add_file">Lägg till fil</string>
+    <string name="write_new_note">Skapa ny notering</string>
+    <string name="clear">ta bort</string>
+    <string name="add_note">Lägg till anteckning</string>
+    <!--EVENT SUMMARY-->
+
+    <!--AGE CUSTOM VIEW-->
+    <string name="incident_date">infall datum</string>
+    <string name="past_programs">Tidigare program</string>
+
+    <!--PERMISSIONS-->
+    <string name="permission_denied">Du har antagligen inte den nödvändiga behörigheten för att utföra åtgärden.</string>
+
+    <string name="period">Period</string>
+    <string name="tuto_main_1">Välkommen till DHIS2</string>
+    <string name="tuto_main_2">Här kan du se dina program</string>
+    <string name="tuto_main_3">Du kan använda ett filter...</string>
+    <string name="tuto_main_4">...genom att ändra perioden och välja datum...</string>
+    <string name="tuto_main_5">...eller filtrera efter organisationsenhet</string>
+    <string name="tuto_main_6">Kontrollera andra åtgärder i huvudmenyn</string>
+
+    <!-- RELATIONSHIPS -->
+    <string name="next">Nästa</string>
+    <string name="search_min_num_attr">Du måste ange minst %d av attributen för att göra en sökning</string>
+
+    <!-- QR -->
+    <string name="QR_SCANNER">Importerar QR data</string>
+    <string name="button_ok">ok</string>
+    <string name="qr_id">Identifikation</string>
+    <string name="qr_attributes">Attribut</string>
+    <string name="qr_enrollment">Inskrivningar</string>
+    <string name="qr_events">Händelser</string>
+    <string name="qr_relationships">Relationer</string>
+    <string name="read_more_qr">Läs nästa QR för att få mer info.</string>
+    <string name="save_qr">Sluta läsa och spara data</string>
+    <string name="qr_no_data">inget data</string>
+    <string name="qr_error_id">Ogiltig QR-kod</string>
+    <string name="qr_error_attr">Det här attributet kan inte läggas till</string>
+
+    <string name="about">Handla om</string>
+    <string name="programs_to_enroll">Program för att registrera</string>
+    <string name="share">Dela med sig</string>
+    <string name="share_qr">Dela QR</string>
+    <string name="max">max</string>
+    <string name="current">AKTUELL</string>
+    <string name="tei">TEI</string>
+    <string name="wipe_data">Återställ app</string>
+    <string name="warning_error_on_complete_title">Kolla detta!</string>
+    <string name="save">Spara</string>
+    <!--ABOUT-->
+    <string name="about_app">App version: %s</string>
+    <string name="about_sdk">SDK Version: %s</string>
+    <string name="about_connected">Ansluten till: %s</string>
+    <string name="about_user">Aktuell användare: %s</string>
+    <string name="search_program_not_selected">Välj ett program för att aktivera registrering</string>
+    <string name="search_access_error">Du har inte behörig behörighet</string>
+    <string name="all_tei_type">Alla %s</string>
+    <string name="invalid_phone_number">Detta är inte ett giltigt telefonnummer</string>
+    <string name="invalid_possitive_zero">Endast positiva tal eller noll tillåts</string>
+    <string name="select_option">Välj alternativ</string>
+    <string name="event_completed_title">Avslutade händelser</string>
+    <string name="event_completed_message">Alla händelser i detta program är avslutade. Vill du stänga programmet också?</string>
+    <string name="check_event">Kontrollera</string>
+
+    <string name="menu_home">Hem</string>
+    <string name="relationships">relationer</string>
+    <string name="please_wait">Vänta</string>
+    <string name="state_warning">Varning</string>
+    <string name="action_close">Stänga</string>
+    <string name="filters_title_period">Period</string>
+    <string name="filters_title_state">Synkronisera</string>
+    <string name="filter_period_this_week">Denna vecka</string>
+    <string name="filter_period_last_week">Förra veckan</string>
+    <string name="filter_period_this_month">Den här månaden</string>
+    <string name="filter_period_last_month">Förra månaden</string>
+    <string name="filter_period_other">Övrig</string>
+    <string name="filter_event_status_open">Öppen</string>
+    <string name="filter_event_status_completed">Avklarad</string>
+    <string name="go_back">Gå tillbaka</string>
+    <string name="data_sets">dataset</string>
+    <string name="filter_sync_error">Synkroniseringsfel</string>
+    <string name="filters_title_event_status">Händelsestatus</string>
+    <string name="enrollment_status_active">Öppen</string>
+    <string name="enrollment_status_completed">Färdigt</string>
+    <string name="enrollment_status_cancelled">Avbruten</string>
+    <string name="filters_title_date">Datum</string>
+    <string name="customactivityoncrash_error_activity_restart_app">Gå tillbaka</string>
+    <string name="section_charts">diagram</string>
+    <string name="navigation_map_view">Karta</string>
+    <string name="navigation_programs">program</string>
+    <string name="navigation_charts">diagram</string>
+    <string name="navigation_tei_data">detaljer</string>
+    <string name="filter_period_this_year">Det här året</string>
+    <string name="filter_period_this_quarter">detta kvartal</string>
+    <string name="filter_period_last_quarter">Förra kvartalet</string>
+    <string name="filter_period_months_this_year">Månader i år</string>
+    <string name="filter_period_quarters_this_year">Kvartalen i år</string>
+    <string name="filter_period_months_last_year">Månader förra året</string>
+    <string name="filter_period_last_year">Förra året</string>
+    <string name="filter_period_this_financial_year">Detta räkenskapsår</string>
+    <string name="filter_period_last_financial_year">Föregående räkenskapsår</string>
+    <string name="section_feedback">Återkoppling</string>
+    <string name="section_indicators">indikatorer</string>
+    <string name="sync_dialog_action_send">Skicka</string>
+    <string name="programs">program</string>
+    <string name="sync_error">Synkroniseringsfel</string>
+    <string name="coordinates">koordinater</string>
+    <string name="scheduled_enter_event">Schemalagd</string>
+    <string name="show_more">Visa mer</string>
+    <string name="show_less">Visa mindre</string>
+    <string name="sync">Synkronisera</string>
+    </resources>

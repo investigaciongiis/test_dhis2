@@ -1,0 +1,116 @@
+package org.dhis2.usescases.searchTrackEntity.adapters
+
+import android.view.View
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.recyclerview.widget.RecyclerView
+import org.dhis2.commons.bindings.paintAllEnrollmentIcons
+import org.dhis2.commons.data.EnrollmentIconData
+import org.dhis2.commons.date.toDateSpan
+import org.dhis2.commons.resources.ColorUtils
+import org.dhis2.databinding.ItemSearchTrackedEntityBinding
+import org.dhis2.mobile.commons.extensions.toJavaDate
+import org.dhis2.tracker.search.data.toSDKState
+import org.dhis2.usescases.searchTrackEntity.SearchTeiModel
+
+abstract class BaseTeiViewHolder(
+    private val binding: ItemSearchTrackedEntityBinding,
+    private val colorUtils: ColorUtils,
+) : RecyclerView.ViewHolder(binding.root) {
+    lateinit var teiModel: SearchTeiModel
+
+    abstract fun itemViewClick()
+
+    abstract fun itemConfiguration()
+
+    init {
+        binding.composeProgramList.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed,
+        )
+    }
+
+    fun bind(
+        teiModel: SearchTeiModel,
+        attributeVisibilityCallback: () -> Unit,
+        profileImagePreviewCallback: (String) -> Unit,
+    ) {
+        this.teiModel = teiModel
+        if (teiModel.isAttributeListOpen) {
+            showAttributeList()
+        } else {
+            hideAttributeList()
+        }
+
+        binding.apply {
+            overdue = teiModel.tei.overDueDate?.toJavaDate() != null
+            isOnline = teiModel.tei.isOnline
+            orgUnit = teiModel.tei.enrollmentOrgUnit
+            teiSyncState = teiModel.tei.aggregatedSyncState?.toSDKState()
+            attribute = teiModel.attributeValues.values.toList()
+            attributeNames = teiModel.attributeValues.keys
+            attributeListOpened = teiModel.isAttributeListOpen
+            lastUpdated.text = teiModel.tei.lastUpdated?.toJavaDate()?.toDateSpan(itemView.context)
+            sortingValue = teiModel.sortingValue
+        }
+
+        teiModel.apply {
+            binding.setFollowUp(tei.enrollments?.hasFollowUp())
+            val enrollmentIconDataList: List<EnrollmentIconData>? =
+                tei.enrolledPrograms?.getEnrollmentIconsData(
+                    if (selectedEnrollment != null) selectedEnrollment.program else null,
+                ) { programUid -> getMetadataIconData(programUid) }
+            enrollmentIconDataList?.paintAllEnrollmentIcons(
+                binding.composeProgramList,
+            )
+            if (selectedEnrollment != null) {
+                selectedEnrollment.setStatusText(
+                    itemView.context,
+                    binding.enrollmentStatus,
+                    teiModel.tei.overDueDate != null,
+                    teiModel.tei.overDueDate?.toJavaDate(),
+                )
+            }
+            setTeiImage(
+                itemView.context,
+                binding.trackedEntityImage,
+                binding.imageText,
+                colorUtils,
+                profileImagePreviewCallback,
+            )
+            attributeValues.setAttributeList(
+                binding.attributeList,
+                binding.showAttributesButton,
+                adapterPosition,
+                teiModel.isAttributeListOpen,
+                teiModel.sortingKey,
+                teiModel.sortingValue,
+                teiModel.tei.enrollmentOrgUnit,
+            ) {
+                attributeVisibilityCallback()
+            }
+        }
+
+        binding.executePendingBindings()
+        itemConfiguration()
+        itemViewClick()
+    }
+
+    private fun showAttributeList() {
+        binding.attributeBName.visibility = View.GONE
+        binding.enrolledOrgUnit.visibility = View.GONE
+        binding.sortingFieldName.visibility = View.GONE
+        binding.entityAttribute2.visibility = View.GONE
+        binding.entityOrgUnit.visibility = View.GONE
+        binding.sortingFieldValue.visibility = View.GONE
+        binding.attributeList.visibility = View.VISIBLE
+    }
+
+    private fun hideAttributeList() {
+        binding.attributeList.visibility = View.GONE
+        binding.attributeBName.visibility = View.VISIBLE
+        binding.enrolledOrgUnit.visibility = View.VISIBLE
+        binding.sortingFieldName.visibility = View.VISIBLE
+        binding.entityAttribute2.visibility = View.VISIBLE
+        binding.entityOrgUnit.visibility = View.VISIBLE
+        binding.sortingFieldValue.visibility = View.VISIBLE
+    }
+}

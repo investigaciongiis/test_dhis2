@@ -1,0 +1,1207 @@
+package org.dhis2.usescases.searchTrackEntity
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.List
+import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.outlined.Map
+import androidx.paging.PagingData
+import androidx.paging.testing.asSnapshot
+import app.cash.turbine.test
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.dhis2.R
+import org.dhis2.commons.filters.FilterManager
+import org.dhis2.commons.network.NetworkUtils
+import org.dhis2.commons.resources.ResourceManager
+import org.dhis2.commons.viewmodel.DispatcherProvider
+import org.dhis2.form.ui.customintent.CustomIntentResult
+import org.dhis2.form.ui.provider.DisplayNameProvider
+import org.dhis2.maps.geometry.mapper.EventsByProgramStage
+import org.dhis2.maps.usecases.MapStyleConfiguration
+import org.dhis2.mobile.commons.model.CustomIntentModel
+import org.dhis2.tracker.input.model.TrackerInputType
+import org.dhis2.tracker.input.ui.action.TrackerInputAction
+import org.dhis2.tracker.input.ui.state.TrackerInputUiState
+import org.dhis2.tracker.search.domain.FetchOptionSetOptions
+import org.dhis2.tracker.search.domain.FetchSearchParameters
+import org.dhis2.tracker.search.domain.SearchTrackedEntities
+import org.dhis2.tracker.search.model.SearchTrackedEntitiesInput
+import org.dhis2.usescases.searchTrackEntity.listView.SearchResult.SearchResultType
+import org.dhis2.utils.customviews.navigationbar.NavigationPage
+import org.hisp.dhis.android.core.common.ObjectWithUid
+import org.hisp.dhis.android.core.program.Program
+import org.hisp.dhis.android.core.trackedentity.TrackedEntityType
+import org.hisp.dhis.mobile.ui.designsystem.component.Orientation
+import org.hisp.dhis.mobile.ui.designsystem.component.navigationBar.NavigationBarItem
+import org.junit.After
+import org.junit.Assert.assertTrue
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.maplibre.geojson.BoundingBox
+import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
+
+@OptIn(ExperimentalCoroutinesApi::class)
+class SearchTEIViewModelTest {
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    private lateinit var viewModel: SearchTEIViewModel
+    private val initialProgram = "programUid"
+    private val initialQuery = mutableMapOf<String, List<String>?>()
+    private val repository: SearchRepository = mock()
+    private val repositoryKt: SearchRepositoryKt = mock()
+    private val pageConfigurator: SearchPageConfigurator = mock()
+    private val mapDataRepository: MapDataRepository = mock()
+    private val networkUtils: NetworkUtils = mock()
+    private val mapStyleConfiguration: MapStyleConfiguration = mock()
+    private val resourceManager: ResourceManager = mock()
+    private val displayNameProvider: DisplayNameProvider = mock()
+    private val filterManager: FilterManager = mock()
+    private val searchTrackedEntities: SearchTrackedEntities =
+        mock {
+            onBlocking { invoke(any()) } doReturn Result.success(flowOf(PagingData.empty()))
+        }
+
+    private val fetchSearchParameters: FetchSearchParameters = mock()
+    private val fetchOptionSetOptions: FetchOptionSetOptions = mock()
+
+    @ExperimentalCoroutinesApi
+    private val testingDispatcher = StandardTestDispatcher()
+
+    @ExperimentalCoroutinesApi
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(testingDispatcher)
+        whenever(pageConfigurator.initVariables()) doReturn pageConfigurator
+        setCurrentProgram(testingProgram())
+        whenever(repository.canCreateInProgramWithoutSearch()) doReturn true
+        whenever(repository.getTrackedEntityType()) doReturn testingTrackedEntityType()
+        whenever(repository.filtersApplyOnGlobalSearch()) doReturn true
+        whenever(repositoryKt.getExcludeValues()) doReturn HashSet<String>()
+        whenever(repositoryKt.saveSearchValuesAndGetAllowCache(any(), any())) doReturn true
+        viewModel =
+            SearchTEIViewModel(
+                initialProgram,
+                initialQuery,
+                repository,
+                repositoryKt,
+                pageConfigurator,
+                mapDataRepository,
+                networkUtils,
+                object : DispatcherProvider {
+                    override fun io(): CoroutineDispatcher = testingDispatcher
+
+                    override fun computation(): CoroutineDispatcher = testingDispatcher
+
+                    override fun ui(): CoroutineDispatcher = testingDispatcher
+                },
+                mapStyleConfiguration,
+                resourceManager = resourceManager,
+                displayNameProvider = displayNameProvider,
+                filterManager = filterManager,
+                searchTrackedEntities = searchTrackedEntities,
+                fetchSearchParameters = fetchSearchParameters,
+                fetchOptionSetOptions = fetchOptionSetOptions,
+            )
+        testingDispatcher.scheduler.advanceUntilIdle()
+    }
+
+    @ExperimentalCoroutinesApi
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun `Should set SearchList if displayFrontPageList is true`() {
+        viewModel.setListScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchList)
+    }
+
+    @Test
+    fun `Should set SearchList if displayFrontPageList is false and can create`() {
+        setCurrentProgram(testingProgram(displayFrontPageList = false))
+        setAllowCreateBeforeSearch(true)
+        viewModel.setListScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchList)
+    }
+
+    @Test
+    fun `Should set SearchForm if displayFrontPageList is false and can not create`() {
+        setCurrentProgram(testingProgram(displayFrontPageList = false))
+        setAllowCreateBeforeSearch(false)
+        viewModel.setListScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchList)
+        assertTrue((screenState as SearchList).searchForm.isOpened)
+    }
+
+    @Test
+    fun `Should set Map screen`() {
+        viewModel.setMapScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState?.screenState == SearchScreenState.MAP)
+    }
+
+    @Test
+    fun `Should set Analytics screen`() {
+        viewModel.setAnalyticsScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchAnalytics)
+    }
+
+    @Test
+    fun `Should set Search screen in portrait`() {
+        viewModel.setSearchScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchList)
+        assertTrue((screenState as SearchList).searchForm.isOpened)
+    }
+
+    @Test
+    fun `Should set Search screen in landscape`() {
+        viewModel.setSearchScreen()
+
+        val screenState = viewModel.screenState.value
+        assertTrue(screenState is SearchList)
+    }
+
+    @Test
+    fun `Should set previous screen`() {
+        viewModel.setListScreen()
+        viewModel.setSearchScreen()
+        viewModel.setPreviousScreen()
+
+        val screenStateA = viewModel.screenState.value
+        assertTrue(screenStateA?.screenState == SearchScreenState.LIST)
+
+        viewModel.setMapScreen()
+        viewModel.setSearchScreen()
+        viewModel.setPreviousScreen()
+
+        val screenStateB = viewModel.screenState.value
+        assertTrue(screenStateB?.screenState == SearchScreenState.MAP)
+    }
+
+    @Test
+    fun `Should update query data`() {
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue",
+        )
+
+        val queryData = viewModel.queryDataList
+
+        assertTrue(queryData.isNotEmpty())
+        assertTrue(queryData.size == 1)
+        val data = queryData.first { it.attributeId == "testingUid" }
+        assertTrue(data.values?.get(0) == "testingValue")
+    }
+
+    @Test
+    fun `Should update query data when list of values is passed`() {
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue,testingValue2",
+        )
+
+        val queryData = viewModel.queryDataList
+
+        assertTrue(queryData.isNotEmpty())
+        assertTrue(queryData.any { it.attributeId == "testingUid" })
+        val data = queryData.first { it.attributeId == "testingUid" }
+        assertTrue(data.values?.size == 2)
+        assertTrue(data.values?.contains("testingValue") == true)
+        assertTrue(data.values?.contains("testingValue2") == true)
+    }
+
+    @Test
+    fun `Should update query data when various list of values are passed`() {
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue,testingValue2",
+        )
+        viewModel.onValueChange(
+            fieldUid = "testingUid2",
+            value = "testingValue,testingValue2",
+        )
+
+        val queryData = viewModel.queryDataList
+
+        assertTrue(queryData.isNotEmpty())
+        assertTrue(queryData.any { it.attributeId == "testingUid" })
+        val data1 = queryData.first { it.attributeId == "testingUid" }
+        assertTrue(data1.values?.size == 2)
+        assertTrue(data1.values?.contains("testingValue") == true)
+        assertTrue(data1.values?.contains("testingValue2") == true)
+
+        assertTrue(queryData.any { it.attributeId == "testingUid2" })
+        val data2 = queryData.first { it.attributeId == "testingUid2" }
+        assertTrue(data2.values?.size == 2)
+        assertTrue(data2.values?.contains("testingValue") == true)
+        assertTrue(data2.values?.contains("testingValue2") == true)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should return local results LiveData if not searching and displayInList is true`() =
+        runTest {
+            val testingProgram = testingProgram()
+            setCurrentProgram(testingProgram)
+
+            viewModel.searchPagingData.take(1).asSnapshot()
+
+            verify(searchTrackedEntities).invoke(
+                eq(
+                    SearchTrackedEntitiesInput(
+                        selectedProgram = testingProgram.uid(),
+                        queryDataList = mutableListOf(),
+                        allowCache = true,
+                        excludeValues = emptySet(),
+                        hasStateFilters = false,
+                        isOnline = false,
+                    ),
+                ),
+            )
+        }
+
+    @Test
+    fun `Should return null if not searching and displayInList is false`() =
+        runTest {
+            val testingProgram = testingProgram(displayFrontPageList = false)
+            setCurrentProgram(testingProgram)
+            viewModel.searchPagingData.test {
+                awaitItem()
+                verify(searchTrackedEntities, never()).invoke(any())
+            }
+        }
+
+    @Test
+    fun `Should return empty global results if not searching`() =
+        runTest {
+            val result = viewModel.searchPagingData.take(1).asSnapshot()
+            assertTrue(result.isEmpty())
+        }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should fetch map results`() {
+        val trackerMapData =
+            TrackerMapData(
+                EventsByProgramStage("tag", mapOf()),
+                mutableListOf(),
+                hashMapOf(),
+                BoundingBox.fromLngLats(
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                ),
+                mutableMapOf(),
+            )
+        whenever(
+            mapDataRepository.getTrackerMapData(
+                testingProgram(),
+                viewModel.queryDataAsMap(),
+            ),
+        ) doReturn trackerMapData
+
+        runTest {
+            viewModel.fetchMapResults()
+            testingDispatcher.scheduler.advanceUntilIdle()
+            viewModel.mapResults.test {
+                assertTrue(awaitItem() == trackerMapData)
+            }
+        }
+    }
+
+    @Test
+    fun `Should use callback to perform min attributes warning`() =
+        runTest {
+            setCurrentProgram(testingProgram(displayFrontPageList = false))
+            setAllowCreateBeforeSearch(false)
+            viewModel.onSearch()
+            viewModel.searchParametersUiState.shouldShowMinAttributeWarning.test {
+                assertTrue(awaitItem())
+            }
+        }
+
+    @Test
+    fun `Should search for list result`() {
+        setCurrentProgram(testingProgram())
+        viewModel.setListScreen()
+        viewModel.setSearchScreen()
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue",
+        )
+
+        viewModel.onSearch()
+
+        assertTrue(viewModel.refreshData.value != null)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should search for map result`() {
+        whenever(
+            mapDataRepository.getTrackerMapData(
+                testingProgram(),
+                viewModel.queryDataAsMap(),
+            ),
+        ) doReturn
+            TrackerMapData(
+                EventsByProgramStage("tag", mapOf()),
+                mutableListOf(),
+                hashMapOf(),
+                BoundingBox.fromLngLats(
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.0,
+                ),
+                mutableMapOf(),
+            )
+        setCurrentProgram(testingProgram())
+        viewModel.setMapScreen()
+        viewModel.setSearchScreen()
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue",
+        )
+
+        viewModel.onSearch()
+
+        testingDispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(viewModel.refreshData.value != null)
+        verify(mapDataRepository).getTrackerMapData(
+            testingProgram(),
+            viewModel.queryDataAsMap(),
+        )
+    }
+
+    @Test
+    fun `Should filter query data for new program`() {
+        viewModel.queryDataByProgram("programUid")
+        verify(repository).filterQueryForProgram(viewModel.queryDataAsMap(), "programUid")
+    }
+
+    @Test
+    fun `Should enroll on click`() {
+        viewModel.onEnrollClick()
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.legacyInteraction.value is LegacyInteraction.OnEnrollClick)
+    }
+
+    @Test
+    fun `Should add relationship`() {
+        viewModel.onAddRelationship("teiUd", "relationshipTypeUid", false)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.legacyInteraction.value is LegacyInteraction.OnAddRelationship)
+    }
+
+    @Test
+    fun `Should show sync icon`() {
+        viewModel.onSyncIconClick("teiUid")
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.legacyInteraction.value is LegacyInteraction.OnSyncIconClick)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should downloadTei`() {
+        viewModel.onDownloadTei("teiUid", null)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        verify(repository).download("teiUid", null, null)
+    }
+
+    @Test
+    fun `Should click on TEI`() {
+        viewModel.onTeiClick("teiUid", null, true)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.legacyInteraction.value is LegacyInteraction.OnTeiClick)
+    }
+
+    @Test
+    fun `Should return no more result for displayInList true`() {
+        viewModel.onDataLoaded(2)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.NO_MORE_RESULTS_OFFLINE)
+        }
+    }
+
+    @Test
+    fun `Should return search or create results for displayInList true`() {
+        setAllowCreateBeforeSearch(true)
+        viewModel.onDataLoaded(0)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.SEARCH_OR_CREATE)
+        }
+    }
+
+    @Test
+    fun `Should return no more results offline and not set SearchScreen for displayInList true`() {
+        setAllowCreateBeforeSearch(false)
+        viewModel.onDataLoaded(0)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.NO_MORE_RESULTS_OFFLINE)
+        }
+        assertTrue(viewModel.screenState.value !is SearchList)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should return too many results for search`() {
+        setCurrentProgram(testingProgram(maxTeiCountToReturn = 1))
+        setAllowCreateBeforeSearch(false)
+        performSearch()
+        viewModel.onDataLoaded(2)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.TOO_MANY_RESULTS)
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should return search outside result for search`() {
+        setCurrentProgram(testingProgram(maxTeiCountToReturn = 1))
+        setAllowCreateBeforeSearch(false)
+        whenever(
+            repository.filterQueryForProgram(
+                any(),
+                anyOrNull(),
+            ),
+        ) doReturn mapOf("testingUid" to listOf("testingValue"))
+
+        performSearch()
+        viewModel.onDataLoaded(1)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.SEARCH_OUTSIDE)
+        }
+    }
+
+    @Test
+    fun `Should return unable to search outside result for search`() {
+        setCurrentProgram(testingProgram(maxTeiCountToReturn = 1))
+        setAllowCreateBeforeSearch(false)
+        whenever(repository.filterQueryForProgram(viewModel.queryDataAsMap(), null)) doReturn mapOf()
+        whenever(repository.trackedEntityTypeFields()) doReturn listOf("Field_1", "Field_2")
+
+        performSearch()
+        viewModel.onDataLoaded(1)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.UNABLE_SEARCH_OUTSIDE)
+        }
+    }
+
+    @Test
+    fun `Should return no more results for global search`() {
+        setCurrentProgram(testingProgram(maxTeiCountToReturn = 1))
+        setAllowCreateBeforeSearch(false)
+        performSearch()
+        viewModel.onDataLoaded(1, 1)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.NO_MORE_RESULTS)
+        }
+    }
+
+    @Test
+    fun `Should return no results for search`() {
+        setCurrentProgram(testingProgram())
+        setAllowCreateBeforeSearch(false)
+        performSearch()
+        viewModel.onDataLoaded(0, 0)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.NO_RESULTS)
+        }
+    }
+
+    @Test
+    fun `Should return init search`() {
+        setCurrentProgram(testingProgram(displayFrontPageList = false))
+        setAllowCreateBeforeSearch(false)
+        viewModel.onDataLoaded(0, null)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.SEARCH)
+        }
+    }
+
+    @Test
+    fun `Should return no more results for global search when filter do not apply for it`() {
+        setCurrentProgram(testingProgram(maxTeiCountToReturn = 1))
+        setAllowCreateBeforeSearch(false)
+        whenever(repository.filtersApplyOnGlobalSearch()) doReturn false
+        performSearch()
+        viewModel.onDataLoaded(1, 1)
+        viewModel.dataResult.value?.apply {
+            assertTrue(isNotEmpty())
+            assertTrue(size == 1)
+            assertTrue(first().type == SearchResultType.NO_MORE_RESULTS)
+        }
+    }
+
+    @Test
+    fun `Should close keyboard and filters`() {
+        viewModel.onBackPressed(
+            isPortrait = true,
+            searchOrFilterIsOpen = true,
+            keyBoardIsOpen = true,
+            goBackCallback = { assertTrue(false) },
+            closeSearchOrFilterCallback = { assertTrue(true) },
+            closeKeyboardCallback = { assertTrue(true) },
+        )
+    }
+
+    @Test
+    fun `Should close filters`() {
+        viewModel.onBackPressed(
+            isPortrait = true,
+            searchOrFilterIsOpen = true,
+            keyBoardIsOpen = false,
+            goBackCallback = { assertTrue(false) },
+            closeSearchOrFilterCallback = { assertTrue(true) },
+            closeKeyboardCallback = { assertTrue(false) },
+        )
+    }
+
+    @Test
+    fun `Should close keyboard and go back`() {
+        viewModel.onBackPressed(
+            isPortrait = true,
+            searchOrFilterIsOpen = false,
+            keyBoardIsOpen = true,
+            goBackCallback = { assertTrue(true) },
+            closeSearchOrFilterCallback = { assertTrue(false) },
+            closeKeyboardCallback = { assertTrue(true) },
+        )
+    }
+
+    @Test
+    fun `Should go back`() {
+        viewModel.onBackPressed(
+            isPortrait = true,
+            searchOrFilterIsOpen = false,
+            keyBoardIsOpen = false,
+            goBackCallback = { assertTrue(true) },
+            closeSearchOrFilterCallback = { assertTrue(false) },
+            closeKeyboardCallback = { assertTrue(false) },
+        )
+    }
+
+    @Test
+    fun `Should display navigation bar`() {
+        viewModel.setListScreen()
+        assertTrue(viewModel.canDisplayBottomNavigationBar())
+        viewModel.setMapScreen()
+        assertTrue(viewModel.canDisplayBottomNavigationBar())
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should return break the glass result when downloading`() {
+        whenever(
+            repository.download(
+                "teiUid",
+                null,
+                null,
+            ),
+        ) doReturn TeiDownloadResult.BreakTheGlassResult("teiUid", null)
+
+        viewModel.onDownloadTei("teiUid", null)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.downloadResult.value is TeiDownloadResult.BreakTheGlassResult)
+    }
+
+    @ExperimentalCoroutinesApi
+    @Test
+    fun `Should enroll tei in current program`() {
+        whenever(
+            repository.download(
+                "teiUid",
+                null,
+                null,
+            ),
+        ) doReturn TeiDownloadResult.TeiToEnroll("teiUid")
+
+        viewModel.onDownloadTei("teiUid", null)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.downloadResult.value == null)
+        testingDispatcher.scheduler.advanceUntilIdle()
+        assertTrue(viewModel.legacyInteraction.value is LegacyInteraction.OnEnroll)
+    }
+
+    @Test
+    fun `should return selected program uid and set theme`() {
+        val programs =
+            listOf(
+                ProgramSpinnerModel("program1", "program1", false),
+                ProgramSpinnerModel("program2", "program2", false),
+            )
+
+        viewModel.onProgramSelected(2, programs) {
+            assertTrue(it == "program2")
+        }
+        verify(repository).setCurrentTheme(programs[1])
+    }
+
+    @Test
+    fun `should return first program uid and set theme`() {
+        val programs =
+            listOf(
+                ProgramSpinnerModel("program1", "program1", false),
+            )
+
+        viewModel.onProgramSelected(2, programs) {
+            assertTrue(it == "program1")
+        }
+        verify(repository).setCurrentTheme(programs[0])
+    }
+
+    @Test
+    fun `should return null uid and set theme`() {
+        viewModel.onProgramSelected(0, listOf()) {
+            assertTrue(it == null)
+        }
+        verify(repository).setCurrentTheme(null)
+    }
+
+    @Test
+    fun `should return user-friendly names on search parameters fields`() {
+        viewModel.searchParametersUiState =
+            viewModel.searchParametersUiState.copy(items = getTrackerInputModels())
+        val expectedMap =
+            mapOf(
+                "uid1" to "Friendly OrgUnit Name",
+                "uid2" to "Male",
+                "uid3" to "21/02/2024",
+                "uid4" to "21/02/2024 - 01:00",
+                "uid5" to "Boolean: false",
+                "uid6" to "Yes Only: true",
+                "uid7" to "Text value",
+                "uid9" to "18%",
+            )
+
+        val formattedMap = viewModel.getFriendlyQueryData()
+
+        assertTrue(expectedMap == formattedMap)
+    }
+
+    @Test
+    fun `should clear uiState when clearing data`() {
+        viewModel.searchParametersUiState =
+            viewModel.searchParametersUiState.copy(items = getTrackerInputModels())
+        performSearch()
+        viewModel.clearQueryData()
+        assert(viewModel.queryDataList.isEmpty())
+        assert(viewModel.searchParametersUiState.items.all { it.value == null })
+        assert(viewModel.searchParametersUiState.searchedItems.isEmpty())
+    }
+
+    @Test
+    fun `should return date without format`() {
+        viewModel.searchParametersUiState =
+            viewModel.searchParametersUiState.copy(items = getMalformedDateFieldUIModels())
+        val expectedMap =
+            mapOf(
+                "uid1" to "04",
+            )
+
+        val formattedMap = viewModel.getFriendlyQueryData()
+
+        assertTrue(expectedMap == formattedMap)
+    }
+
+    @Test
+    fun `when there is only one navigation item, navigation items list should be empty`() {
+        // given
+        val searchNavPageConfigurator: SearchPageConfigurator =
+            mock {
+                on { displayListView() } doReturn true
+                on { displayMapView() } doReturn false
+                on { displayAnalytics() } doReturn false
+            }
+
+        whenever(searchNavPageConfigurator.initVariables()) doReturn searchNavPageConfigurator
+        whenever(resourceManager.getString(any())) doReturn "label"
+
+        val viewModel =
+            SearchTEIViewModel(
+                initialProgramUid = initialProgram,
+                initialQuery = initialQuery,
+                searchRepository = repository,
+                searchRepositoryKt = repositoryKt,
+                searchNavPageConfigurator = searchNavPageConfigurator,
+                mapDataRepository = mapDataRepository,
+                networkUtils = networkUtils,
+                dispatchers =
+                    object : DispatcherProvider {
+                        override fun io(): CoroutineDispatcher = testingDispatcher
+
+                        override fun computation(): CoroutineDispatcher = testingDispatcher
+
+                        override fun ui(): CoroutineDispatcher = testingDispatcher
+                    },
+                mapStyleConfig = mapStyleConfiguration,
+                resourceManager = resourceManager,
+                displayNameProvider = displayNameProvider,
+                filterManager = filterManager,
+                searchTrackedEntities = searchTrackedEntities,
+                fetchSearchParameters = fetchSearchParameters,
+                fetchOptionSetOptions = fetchOptionSetOptions,
+            )
+        testingDispatcher.scheduler.advanceUntilIdle()
+
+        // then
+        val navBarUIState = viewModel.navigationBarUIState.value
+        assertTrue(navBarUIState.items.isEmpty())
+    }
+
+    @Test
+    fun `when there is more than one navigation item, navigation items list should not be empty`() {
+        // given
+        val searchNavPageConfigurator: SearchPageConfigurator =
+            mock {
+                on { displayListView() } doReturn true
+                on { displayMapView() } doReturn true
+                on { displayAnalytics() } doReturn false
+            }
+
+        val viewModel =
+            SearchTEIViewModel(
+                initialProgramUid = initialProgram,
+                initialQuery = initialQuery,
+                searchRepository = repository,
+                searchRepositoryKt = repositoryKt,
+                searchNavPageConfigurator =
+                    mock {
+                        on { initVariables() } doReturn searchNavPageConfigurator
+                    },
+                mapDataRepository = mapDataRepository,
+                networkUtils = networkUtils,
+                dispatchers =
+                    object : DispatcherProvider {
+                        override fun io(): CoroutineDispatcher = testingDispatcher
+
+                        override fun computation(): CoroutineDispatcher = testingDispatcher
+
+                        override fun ui(): CoroutineDispatcher = testingDispatcher
+                    },
+                mapStyleConfig = mapStyleConfiguration,
+                resourceManager =
+                    mock {
+                        on { getString(R.string.navigation_list_view) } doReturn "List"
+                        on { getString(R.string.navigation_map_view) } doReturn "Map"
+                    },
+                displayNameProvider = displayNameProvider,
+                filterManager = filterManager,
+                searchTrackedEntities = searchTrackedEntities,
+                fetchSearchParameters = fetchSearchParameters,
+                fetchOptionSetOptions = fetchOptionSetOptions,
+            )
+        testingDispatcher.scheduler.advanceUntilIdle()
+
+        // then
+        val navBarUIState = viewModel.navigationBarUIState.value
+        assertTrue(navBarUIState.items.isNotEmpty())
+        assertTrue(
+            navBarUIState.items ==
+                listOf(
+                    NavigationBarItem(
+                        id = NavigationPage.LIST_VIEW,
+                        icon = Icons.AutoMirrored.Outlined.List,
+                        selectedIcon = Icons.AutoMirrored.Filled.List,
+                        label = "List",
+                    ),
+                    NavigationBarItem(
+                        id = NavigationPage.MAP_VIEW,
+                        icon = Icons.Outlined.Map,
+                        selectedIcon = Icons.Filled.Map,
+                        label = "Map",
+                    ),
+                ),
+        )
+    }
+
+    @Test
+    fun `should send launch custom intent action`() =
+        runTest {
+            val customIntentModel: CustomIntentModel = mock()
+            whenever(repositoryKt.getCustomIntent(any())) doReturn customIntentModel
+            viewModel.searchActions.test {
+                viewModel.launchCustomIntent("fieldUid", "customIntentUid")
+                assertTrue(awaitItem() is TrackerInputAction.LaunchCustomIntent)
+            }
+        }
+
+    @Test
+    fun `should set error if custom intent result is error`() {
+        whenever(resourceManager.getString(R.string.custom_intent_error)) doReturn "Custom intent error message"
+        viewModel.searchParametersUiState =
+            viewModel.searchParametersUiState.copy(items = customIntentFieldUIModels())
+        viewModel.handleCustomIntentResult(
+            CustomIntentResult.Error("fieldUid"),
+        )
+        assertTrue(
+            viewModel.searchParametersUiState.items
+                .first()
+                .error != null,
+        )
+    }
+
+    @Test
+    fun `should update values if custom intent result is successful`() =
+        runTest {
+            viewModel.searchParametersUiState =
+                viewModel.searchParametersUiState.copy(items = customIntentFieldUIModels())
+            viewModel.handleCustomIntentResult(
+                CustomIntentResult.Success("fieldUid", "customValue"),
+            )
+            assertTrue(
+                viewModel.searchParametersUiState.items
+                    .first()
+                    .error == null,
+            )
+            assertTrue(
+                viewModel.searchParametersUiState.items
+                    .first()
+                    .value == "customValue",
+            )
+        }
+
+    private fun customIntentFieldUIModels() =
+        listOf(
+            TrackerInputUiState(
+                uid = "fieldUid",
+                label = "CustomIntent",
+                value = null,
+                focused = false,
+                valueType = TrackerInputType.ORGANISATION_UNIT,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = "customIntentUid",
+                displayName = "Friendly OrgUnit Name",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+        )
+
+    private fun getMalformedDateFieldUIModels(): List<TrackerInputUiState> =
+        listOf(
+            TrackerInputUiState(
+                uid = "uid1",
+                label = "Date",
+                value = "04",
+                focused = false,
+                valueType = TrackerInputType.DATE,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Friendly OrgUnit Name",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+        )
+
+    private fun getTrackerInputModels(): List<TrackerInputUiState> =
+        listOf(
+            TrackerInputUiState(
+                uid = "uid1",
+                label = "Org Unit",
+                value = "orgUnitUid",
+                focused = false,
+                valueType = TrackerInputType.ORGANISATION_UNIT,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Friendly OrgUnit Name",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid2",
+                label = "Gender",
+                value = "M",
+                focused = false,
+                valueType = TrackerInputType.MULTI_SELECTION,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Male",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid3",
+                label = "Date",
+                value = "2024-02-21",
+                focused = false,
+                valueType = TrackerInputType.DATE,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "21/02/2024",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid4",
+                label = "Date and Time",
+                value = "2024-02-21T01:00",
+                focused = false,
+                valueType = TrackerInputType.DATE_TIME,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "21/02/2024 - 01:00",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid5",
+                label = "Boolean",
+                value = "false",
+                focused = false,
+                valueType = TrackerInputType.HORIZONTAL_CHECKBOXES,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Boolean: false",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid6",
+                label = "Yes Only",
+                value = "true",
+                focused = false,
+                valueType = TrackerInputType.YES_ONLY_SWITCH,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Yes Only; true",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid7",
+                label = "Text",
+                value = "Text value",
+                focused = false,
+                valueType = TrackerInputType.TEXT,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Text value",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid8",
+                label = "Other field",
+                value = null,
+                focused = false,
+                valueType = TrackerInputType.TEXT,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "Male",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+            TrackerInputUiState(
+                uid = "uid9",
+                label = "Percentage",
+                value = "18",
+                focused = false,
+                valueType = TrackerInputType.PERCENTAGE,
+                description = null,
+                mandatory = false,
+                editable = true,
+                legend = null,
+                orientation = Orientation.HORIZONTAL,
+                optionSetConfiguration = null,
+                customIntentUid = null,
+                displayName = "18%",
+                orgUnitSelectorScope = null,
+                searchOperator = null,
+                minCharactersToSearch = null,
+                optionSet = null,
+                error = null,
+                warning = null,
+            ),
+        )
+
+    private fun testingProgram(
+        displayFrontPageList: Boolean = true,
+        minAttributesToSearch: Int = 1,
+        maxTeiCountToReturn: Int? = null,
+    ) = Program
+        .builder()
+        .uid("initialProgram")
+        .displayName("programName")
+        .displayFrontPageList(displayFrontPageList)
+        .minAttributesRequiredToSearch(minAttributesToSearch)
+        .trackedEntityType(TrackedEntityType.builder().uid("teTypeUid").build())
+        .categoryCombo(ObjectWithUid.create("categoryComboUid"))
+        .enrollmentCategoryCombo(ObjectWithUid.create("categoryComboUid"))
+        .apply {
+            maxTeiCountToReturn?.let {
+                maxTeiCountToReturn(maxTeiCountToReturn)
+            }
+        }.build()
+
+    private fun testingTrackedEntityType() =
+        TrackedEntityType
+            .builder()
+            .uid("teiTypeUid")
+            .displayName("teTypeName")
+            .build()
+
+    @ExperimentalCoroutinesApi
+    private fun performSearch() {
+        viewModel.onValueChange(
+            fieldUid = "testingUid",
+            value = "testingValue",
+        )
+        viewModel.setListScreen()
+        viewModel.setSearchScreen()
+        viewModel.onSearch()
+        testingDispatcher.scheduler.advanceUntilIdle()
+    }
+
+    private fun setAllowCreateBeforeSearch(allow: Boolean) {
+        whenever(
+            repository.canCreateInProgramWithoutSearch(),
+        ) doReturn allow
+    }
+
+    private fun setCurrentProgram(program: Program) {
+        whenever(
+            repository.getProgram(initialProgram),
+        ) doReturn program
+    }
+}
